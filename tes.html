@@ -3,33 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uji Coba Form Input Baru</title>
+  <title>Formulir Pengajuan Layanan Publik</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; max-width: 500px; }
+    body { font-family: Arial, sans-serif; margin: 20px auto; max-width: 600px; background-color: #f8f9fa; padding: 20px; }
+    .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h2 { margin-top: 0; color: #0056b3; }
     .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input { width: 100%; padding: 8px; box-sizing: border-box; }
-    button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+    input, select, textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+    input:focus, select:focus, textarea:focus { border-color: #007bff; outline: none; }
+    button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 16px; font-weight: bold; }
     button:hover { background: #0056b3; }
+    .required { color: red; }
   </style>
 </head>
 <body>
 
-  <h2>Formulir Input Data (Uji Coba)</h2>
-  
-  <form action="https://script.google.com/macros/s/AKfycbyGHi-U3pXVs4uKCQOb0xTyrhFC9M5u5mbBarP5Cb2w31_Ior38TGPWFNJ-0GK0rAcU/exec" method="POST">
-    <div class="form-group">
-      <label for="nama">Nama Lengkap:</label>
-      <input type="text" id="nama" name="nama" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="keterangan">Keterangan / Catatan:</label>
-      <input type="text" id="keterangan" name="keterangan" required>
-    </div>
-    
-    <button type="submit">Kirim Data</button>
-  </form>
+  <div class="card">
+    <h2>Formulir Pengajuan Layanan</h2>
+    <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Silakan isi data pemohon secara lengkap dan pilih jenis layanan yang dibutuhkan.</p>
+
+    <form action="https://script.google.com/macros/s/AKfycbyGHi-U3pXVs4uKCQOb0xTyrhFC9M5u5mbBarP5Cb2w31_Ior38TGPWFNJ-0GK0rAcU/exec" method="POST">
+      
+      <!-- 1. Nama Pemohon -->
+      <div class="form-group">
+        <label for="nama">1. Nama Pemohon <span class="required">*</span></label>
+        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+      </div>
+      
+      <!-- 2. NIK -->
+      <div class="form-group">
+        <label for="nik">2. NIK <span class="required">*</span></label>
+        <input type="text" id="nik" name="nik" maxlength="16" pattern="[0-9]{16}" placeholder="16 digit angka NIK" title="NIK harus terdiri dari 16 digit angka" required>
+      </div>
+
+      <!-- 3. No KK -->
+      <div class="form-group">
+        <label for="no_kk">3. No. KK <span class="required">*</span></label>
+        <input type="text" id="no_kk" name="no_kk" maxlength="16" pattern="[0-9]{16}" placeholder="16 digit nomor Kartu Keluarga" title="No. KK harus terdiri dari 16 digit angka" required>
+      </div>
+
+      <!-- 4. No HP -->
+      <div class="form-group">
+        <label for="no_hp">4. No. HP / WhatsApp <span class="required">*</span></label>
+        <input type="tel" id="no_hp" name="no_hp" placeholder="Contoh: 081234567890" required>
+      </div>
+
+      <!-- 5. Alamat Lengkap -->
+      <div class="form-group">
+        <label for="alamat">5. Alamat Lengkap <span class="required">*</span></label>
+        <textarea id="alamat" name="alamat" rows="3" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan" required></textarea>
+      </div>
+
+      <!-- 6. Alamat Email -->
+      <div class="form-group">
+        <label for="email">6. Alamat Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" placeholder="contoh@email.com" required>
+      </div>
+
+      <!-- 7. Tempat, Tanggal Lahir -->
+      <div class="form-group">
+        <label for="ttl">7. Tempat, Tanggal Lahir <span class="required">*</span></label>
+        <input type="text" id="ttl" name="ttl" placeholder="Contoh: Surakarta, 15 Januari 1990" required>
+      </div>
+
+      <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+
+      <!-- Pemilihan Menu Layanan -->
+      <div class="form-group">
+        <label for="menu_layanan">Pilih Jenis Layanan yang Diajukan <span class="required">*</span></label>
+        <select id="menu_layanan" name="menu_layanan" required>
+          <option value="" disabled selected>-- Pilih Layanan --</option>
+          <option value="Perubahan Data KK">1. Perubahan Data KK</option>
+          <option value="Cetak Ulang KK">2. Cetak Ulang KK</option>
+          <option value="Pindah/Datang Dalam Kota">3. Pindah/Datang Dalam Kota</option>
+          <option value="Pindah Ke Luar Kota">4. Pindah Ke Luar Kota</option>
+          <option value="Datang Dari Luar Kota">5. Datang Dari Luar Kota</option>
+          <option value="Pengurusan Akta Lahir">6. Pengurusan Akta Lahir</option>
+          <option value="Pengurusan Akta Kematian">7. Pengurusan Akta Kematian</option>
+          <option value="Pengurusan Nikah">8. Pengurusan Nikah</option>
+          <option value="KK Rusak/Hilang">9. KK Rusak/Hilang</option>
+          <option value="KTP Rusak/Hilang">10. KTP Rusak/Hilang</option>
+          <option value="KIA Hilang/Rusak">11. KIA Hilang/Rusak</option>
+          <option value="Pembuatan KIA Baru">12. Pembuatan KIA Baru</option>
+          <option value="Cek Gakin">13. Cek Gakin</option>
+          <option value="Pembaruan Desil">14. Pembaruan Desil</option>
+          <option value="Permohonan Surat Pengantar/Keterangan">15. Permohonan Surat Pengantar/Keterangan</option>
+        </select>
+      </div>
+
+      <button type="submit">Kirim Pengajuan</button>
+    </form>
+  </div>
 
 </body>
 </html>
