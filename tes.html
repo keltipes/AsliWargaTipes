@@ -5,16 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulir Pengajuan Layanan Publik</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px auto; max-width: 600px; background-color: #f8f9fa; padding: 20px; }
+    body { font-family: Arial, sans-serif; margin: 20px auto; max-width: 700px; background-color: #f8f9fa; padding: 20px; }
     .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     h2 { margin-top: 0; color: #0056b3; }
     .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-    input, select, textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+    .row { display: flex; gap: 10px; }
+    .row .form-group { flex: 1; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #333; }
+    input, select, textarea { width: 100%; padding: 9px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
     input:focus, select:focus, textarea:focus { border-color: #007bff; outline: none; }
-    button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 16px; font-weight: bold; }
+    button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 14px; font-weight: bold; }
     button:hover { background: #0056b3; }
+    .btn-secondary { background: #6c757d; }
+    .btn-secondary:hover { background: #5a6268; }
     .required { color: red; }
+    
+    .submenu-box {
+      display: none;
+      background-color: #f0f7ff;
+      border: 1px solid #b8daff;
+      border-left: 5px solid #007bff;
+      padding: 18px;
+      margin-top: 15px;
+      border-radius: 6px;
+    }
+    .sub-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+    }
+    .sub-title { font-weight: bold; color: #0056b3; margin-bottom: 10px; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
   </style>
 </head>
 <body>
@@ -23,56 +45,52 @@
     <h2>Formulir Pengajuan Layanan</h2>
     <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Silakan isi data pemohon secara lengkap dan pilih jenis layanan yang dibutuhkan.</p>
 
-    <form action="https://script.google.com/macros/s/AKfycbyGHi-U3pXVs4uKCQOb0xTyrhFC9M5u5mbBarP5Cb2w31_Ior38TGPWFNJ-0GK0rAcU/exec" method="POST">
+    <form id="mainForm" action="https://script.google.com/macros/s/AKfycbyGHi-U3pXVs4uKCQOb0xTyrhFC9M5u5mbBarP5Cb2w31_Ior38TGPWFNJ-0GK0rAcU/exec" method="POST" onsubmit="prepareSubmission()">
       
-      <!-- 1. Nama Pemohon -->
+      <!-- DATA PEMOHON UTAMA -->
       <div class="form-group">
         <label for="nama">1. Nama Pemohon <span class="required">*</span></label>
-        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+        <input type="text" id="nama" name="nama" required>
       </div>
       
-      <!-- 2. NIK -->
-      <div class="form-group">
-        <label for="nik">2. NIK <span class="required">*</span></label>
-        <input type="text" id="nik" name="nik" maxlength="16" pattern="[0-9]{16}" placeholder="16 digit angka NIK" title="NIK harus terdiri dari 16 digit angka" required>
+      <div class="row">
+        <div class="form-group">
+          <label for="nik">2. NIK <span class="required">*</span></label>
+          <input type="text" id="nik" name="nik" maxlength="16" pattern="[0-9]{16}" required>
+        </div>
+        <div class="form-group">
+          <label for="no_kk">3. No. KK <span class="required">*</span></label>
+          <input type="text" id="no_kk" name="no_kk" maxlength="16" pattern="[0-9]{16}" required>
+        </div>
       </div>
 
-      <!-- 3. No KK -->
-      <div class="form-group">
-        <label for="no_kk">3. No. KK <span class="required">*</span></label>
-        <input type="text" id="no_kk" name="no_kk" maxlength="16" pattern="[0-9]{16}" placeholder="16 digit nomor Kartu Keluarga" title="No. KK harus terdiri dari 16 digit angka" required>
+      <div class="row">
+        <div class="form-group">
+          <label for="no_hp">4. No. HP / WhatsApp <span class="required">*</span></label>
+          <input type="tel" id="no_hp" name="no_hp" required>
+        </div>
+        <div class="form-group">
+          <label for="email">6. Alamat Email <span class="required">*</span></label>
+          <input type="email" id="email" name="email" required>
+        </div>
       </div>
 
-      <!-- 4. No HP -->
-      <div class="form-group">
-        <label for="no_hp">4. No. HP / WhatsApp <span class="required">*</span></label>
-        <input type="tel" id="no_hp" name="no_hp" placeholder="Contoh: 081234567890" required>
-      </div>
-
-      <!-- 5. Alamat Lengkap -->
       <div class="form-group">
         <label for="alamat">5. Alamat Lengkap <span class="required">*</span></label>
-        <textarea id="alamat" name="alamat" rows="3" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan" required></textarea>
+        <textarea id="alamat" name="alamat" rows="2" required></textarea>
       </div>
 
-      <!-- 6. Alamat Email -->
-      <div class="form-group">
-        <label for="email">6. Alamat Email <span class="required">*</span></label>
-        <input type="email" id="email" name="email" placeholder="contoh@email.com" required>
-      </div>
-
-      <!-- 7. Tempat, Tanggal Lahir -->
       <div class="form-group">
         <label for="ttl">7. Tempat, Tanggal Lahir <span class="required">*</span></label>
         <input type="text" id="ttl" name="ttl" placeholder="Contoh: Surakarta, 15 Januari 1990" required>
       </div>
 
-      <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+      <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
-      <!-- Pemilihan Menu Layanan -->
+      <!-- MENU UTAMA -->
       <div class="form-group">
         <label for="menu_layanan">Pilih Jenis Layanan yang Diajukan <span class="required">*</span></label>
-        <select id="menu_layanan" name="menu_layanan" required>
+        <select id="menu_layanan" name="menu_layanan" onchange="switchSubMenu()" required>
           <option value="" disabled selected>-- Pilih Layanan --</option>
           <option value="Perubahan Data KK">1. Perubahan Data KK</option>
           <option value="Cetak Ulang KK">2. Cetak Ulang KK</option>
@@ -92,9 +110,338 @@
         </select>
       </div>
 
-      <button type="submit">Kirim Pengajuan</button>
+      <!-- Field tersembunyi yang akan dikirim ke Apps Script -->
+      <input type="hidden" id="detail_layanan" name="detail_layanan" value="">
+
+      <!-- ==================== SUB-MENU 1: PERUBAHAN PEKERJAAN (MAX 4) ==================== -->
+      <div id="sub_perubahan_kk" class="submenu-box">
+        <h3 style="margin-top:0; color:#0056b3;">Detail Perubahan Pekerjaan KK</h3>
+        <p style="font-size:12px; color:#666;">Anda dapat mengisikan hingga 4 data anggota keluarga yang diubah pekerjaannya.</p>
+
+        <!-- Container Data Orang -->
+        <div id="container_orang"></div>
+
+        <button type="button" class="btn-secondary" id="btnTambahOrang" onclick="tambahOrang()" style="width:100%; margin-bottom:15px;">+ Tambah Data Orang (Maks 4)</button>
+
+        <!-- Saksi-Saksi Perubahan Data -->
+        <div class="sub-card">
+          <div class="sub-title">Data Saksi-Saksi</div>
+          <div class="row">
+            <div class="form-group">
+              <label>Nama Saksi I <span class="required">*</span></label>
+              <input type="text" id="saksi1_nama" class="req-pk">
+            </div>
+            <div class="form-group">
+              <label>NIK Saksi I <span class="required">*</span></label>
+              <input type="text" id="saksi1_nik" maxlength="16" class="req-pk">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>Nama Saksi II <span class="required">*</span></label>
+              <input type="text" id="saksi2_nama" class="req-pk">
+            </div>
+            <div class="form-group">
+              <label>NIK Saksi II <span class="required">*</span></label>
+              <input type="text" id="saksi2_nik" maxlength="16" class="req-pk">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SUB-MENU 2: PEMBUATAN AKTA LAHIR ==================== -->
+      <div id="sub_akta_lahir" class="submenu-box">
+        <h3 style="margin-top:0; color:#0056b3;">Detail Formulir Akta Kelahiran</h3>
+
+        <!-- 1. Pelapor & Saksi -->
+        <div class="sub-card">
+          <div class="sub-title">1. Kewarganegaraan Pelapor & Saksi</div>
+          <div class="form-group">
+            <label>Kewarganegaraan Pelapor <span class="required">*</span></label>
+            <select id="al_kwg_pelapor" class="req-al">
+              <option value="WNI">WNI</option>
+              <option value="WNA">WNA</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Nama Saksi I <span class="required">*</span></label>
+              <input type="text" id="al_saksi1_nama" class="req-al">
+            </div>
+            <div class="form-group">
+              <label>NIK Saksi I <span class="required">*</span></label>
+              <input type="text" id="al_saksi1_nik" maxlength="16" class="req-al">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>No. KK Saksi I <span class="required">*</span></label>
+              <input type="text" id="al_saksi1_kk" maxlength="16" class="req-al">
+            </div>
+            <div class="form-group">
+              <label>Kewarganegaraan Saksi I <span class="required">*</span></label>
+              <select id="al_saksi1_kwg" class="req-al">
+                <option value="WNI">WNI</option>
+                <option value="WNA">WNA</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Nama Saksi II <span class="required">*</span></label>
+              <input type="text" id="al_saksi2_nama" class="req-al">
+            </div>
+            <div class="form-group">
+              <label>NIK Saksi II <span class="required">*</span></label>
+              <input type="text" id="al_saksi2_nik" maxlength="16" class="req-al">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>No. KK Saksi II <span class="required">*</span></label>
+              <input type="text" id="al_saksi2_kk" maxlength="16" class="req-al">
+            </div>
+            <div class="form-group">
+              <label>Kewarganegaraan Saksi II <span class="required">*</span></label>
+              <select id="al_saksi2_kwg" class="req-al">
+                <option value="WNI">WNI</option>
+                <option value="WNA">WNA</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Data Orang Tua -->
+        <div class="sub-card">
+          <div class="sub-title">2. Data Ayah Bayi</div>
+          <div class="row">
+            <div class="form-group"><label>Nama Ayah <span class="required">*</span></label><input type="text" id="al_ayah_nama" class="req-al"></div>
+            <div class="form-group"><label>NIK Ayah <span class="required">*</span></label><input type="text" id="al_ayah_nik" maxlength="16" class="req-al"></div>
+          </div>
+          <div class="row">
+            <div class="form-group"><label>Tempat Lahir Ayah <span class="required">*</span></label><input type="text" id="al_ayah_tempat" class="req-al"></div>
+            <div class="form-group"><label>Tanggal Lahir <span class="required">*</span></label><input type="number" id="al_ayah_tgl" min="1" max="31" placeholder="1-31" class="req-al"></div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>Bulan Lahir Ayah <span class="required">*</span></label>
+              <select id="al_ayah_bln" class="req-al">
+                <option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option>
+                <option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option>
+                <option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option>
+                <option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Tahun Lahir <span class="required">*</span></label><input type="number" id="al_ayah_thn" placeholder="YYYY" class="req-al"></div>
+            <div class="form-group">
+              <label>Kewarganegaraan <span class="required">*</span></label>
+              <select id="al_ayah_kwg" class="req-al"><option value="WNI">WNI</option><option value="WNA">WNA</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-title">3. Data Ibu Bayi</div>
+          <div class="row">
+            <div class="form-group"><label>Nama Ibu <span class="required">*</span></label><input type="text" id="al_ibu_nama" class="req-al"></div>
+            <div class="form-group"><label>NIK Ibu <span class="required">*</span></label><input type="text" id="al_ibu_nik" maxlength="16" class="req-al"></div>
+          </div>
+          <div class="row">
+            <div class="form-group"><label>Tempat Lahir Ibu <span class="required">*</span></label><input type="text" id="al_ibu_tempat" class="req-al"></div>
+            <div class="form-group"><label>Tanggal Lahir <span class="required">*</span></label><input type="number" id="al_ibu_tgl" min="1" max="31" placeholder="1-31" class="req-al"></div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>Bulan Lahir Ibu <span class="required">*</span></label>
+              <select id="al_ibu_bln" class="req-al">
+                <option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option>
+                <option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option>
+                <option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option>
+                <option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Tahun Lahir <span class="required">*</span></label><input type="number" id="al_ibu_thn" placeholder="YYYY" class="req-al"></div>
+            <div class="form-group">
+              <label>Kewarganegaraan <span class="required">*</span></label>
+              <select id="al_ibu_kwg" class="req-al"><option value="WNI">WNI</option><option value="WNA">WNA</option></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Data Anak -->
+        <div class="sub-card">
+          <div class="sub-title">4. Data Anak / Bayi</div>
+          <div class="row">
+            <div class="form-group"><label>Nama Anak <span class="required">*</span></label><input type="text" id="al_anak_nama" class="req-al"></div>
+            <div class="form-group">
+              <label>Jenis Kelamin <span class="required">*</span></label>
+              <select id="al_anak_jk" class="req-al"><option value="Laki-Laki">Laki-Laki</option><option value="Perempuan">Perempuan</option></select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group"><label>Tempat Kelahiran Anak <span class="required">*</span></label><input type="text" id="al_anak_tempat" placeholder="Kab/Kota" class="req-al"></div>
+            <div class="form-group">
+              <label>Tempat Dilahirkan <span class="required">*</span></label>
+              <select id="al_anak_lokasi" class="req-al">
+                <option value="Rumah Sakit">Rumah Sakit</option>
+                <option value="Klinik Bersalin">Klinik Bersalin</option>
+                <option value="Rumah">Rumah</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Hari Lahir <span class="required">*</span></label>
+              <select id="al_anak_hari" class="req-al">
+                <option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option>
+                <option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option><option value="Minggu">Minggu</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Tanggal Lahir <span class="required">*</span></label><input type="number" id="al_anak_tgl" min="1" max="31" class="req-al"></div>
+            <div class="form-group">
+              <label>Bulan Lahir <span class="required">*</span></label>
+              <select id="al_anak_bln" class="req-al">
+                <option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option>
+                <option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option>
+                <option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option>
+                <option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Tahun Lahir <span class="required">*</span></label><input type="number" id="al_anak_thn" placeholder="YYYY" class="req-al"></div>
+          </div>
+
+          <div class="row">
+            <div class="form-group"><label>Waktu Kelahiran (WIB) <span class="required">*</span></label><input type="time" id="al_anak_waktu" class="req-al"></div>
+            <div class="form-group">
+              <label>Jenis Kelahiran <span class="required">*</span></label>
+              <select id="al_anak_jenis" class="req-al">
+                <option value="Tunggal">Tunggal</option><option value="Kembar">Kembar</option>
+                <option value="Kembar 3">Kembar 3</option><option value="Kembar 4">Kembar 4</option><option value="Kembar 5">Kembar 5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Kelahiran Ke <span class="required">*</span></label>
+              <select id="al_anak_ke" class="req-al">
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Penolong Kelahiran <span class="required">*</span></label>
+              <select id="al_anak_penolong" class="req-al">
+                <option value="Dokter">Dokter</option><option value="Bidan">Bidan</option>
+                <option value="Dukun">Dukun</option><option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Berat Bayi (Kg) <span class="required">*</span></label><input type="number" step="0.1" id="al_anak_berat" placeholder="Contoh: 3.2" class="req-al"></div>
+            <div class="form-group"><label>Panjang Bayi (cm) <span class="required">*</span></label><input type="number" step="0.1" id="al_anak_panjang" placeholder="Contoh: 48" class="req-al"></div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <button type="submit" style="width:100%;">Kirim Pengajuan</button>
     </form>
   </div>
+
+  <script>
+    let jumlahOrang = 0;
+
+    function switchSubMenu() {
+      const menu = document.getElementById('menu_layanan').value;
+      const subPK = document.getElementById('sub_perubahan_kk');
+      const subAL = document.getElementById('sub_akta_lahir');
+
+      // Reset tampilan
+      subPK.style.display = 'none';
+      subAL.style.display = 'none';
+
+      // Reset atribut required
+      document.querySelectorAll('.req-pk').forEach(el => el.required = false);
+      document.querySelectorAll('.req-al').forEach(el => el.required = false);
+
+      if (menu === 'Perubahan Data KK') {
+        subPK.style.display = 'block';
+        if (jumlahOrang === 0) tambahOrang(); // otomatis tambah 1 orang pertama
+        document.querySelectorAll('.req-pk').forEach(el => el.required = true);
+      } else if (menu === 'Pengurusan Akta Lahir') {
+        subAL.style.display = 'block';
+        document.querySelectorAll('.req-al').forEach(el => el.required = true);
+      }
+    }
+
+    function tambahOrang() {
+      if (jumlahOrang >= 4) {
+        alert('Maksimal pengisian 4 data orang.');
+        return;
+      }
+      jumlahOrang++;
+      const container = document.getElementById('container_orang');
+      const card = document.createElement('div');
+      card.className = 'sub-card';
+      card.id = `orang_${jumlahOrang}`;
+      card.innerHTML = `
+        <div class="sub-title">Data Orang Ke-${jumlahOrang}</div>
+        <div class="row">
+          <div class="form-group"><label>Nama Berubah <span class="required">*</span></label><input type="text" id="pk_nama_${jumlahOrang}" class="req-pk" required></div>
+          <div class="form-group"><label>NIK <span class="required">*</span></label><input type="text" id="pk_nik_${jumlahOrang}" maxlength="16" class="req-pk" required></div>
+        </div>
+        <div class="row">
+          <div class="form-group"><label>Tempat Lahir <span class="required">*</span></label><input type="text" id="pk_tmpt_${jumlahOrang}" class="req-pk" required></div>
+          <div class="form-group"><label>Tanggal Lahir <span class="required">*</span></label><input type="date" id="pk_tgl_${jumlahOrang}" class="req-pk" required></div>
+          <div class="form-group">
+            <label>Jenis Kelamin <span class="required">*</span></label>
+            <select id="pk_jk_${jumlahOrang}" class="req-pk" required>
+              <option value="Laki-Laki">Laki-Laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group"><label>Pekerjaan Sebelumnya <span class="required">*</span></label><input type="text" id="pk_sebelum_${jumlahOrang}" class="req-pk" required></div>
+          <div class="form-group"><label>Pekerjaan Sekarang <span class="required">*</span></label><input type="text" id="pk_sekarang_${jumlahOrang}" class="req-pk" required></div>
+        </div>
+      `;
+      container.appendChild(card);
+
+      if (jumlahOrang === 4) {
+        document.getElementById('btnTambahOrang').style.display = 'none';
+      }
+    }
+
+    function prepareSubmission() {
+      const menu = document.getElementById('menu_layanan').value;
+      let detailText = "";
+
+      if (menu === 'Perubahan Data KK') {
+        let listOrang = [];
+        for (let i = 1; i <= jumlahOrang; i++) {
+          listOrang.push(`[Orang ${i}: ${document.getElementById(`pk_nama_${i}`).value} | NIK: ${document.getElementById(`pk_nik_${i}`).value} | TTL: ${document.getElementById(`pk_tmpt_${i}`).value}, ${document.getElementById(`pk_tgl_${i}`).value} | JK: ${document.getElementById(`pk_jk_${i}`).value} | Pek. Lama: ${document.getElementById(`pk_sebelum_${i}`).value} -> Pek. Baru: ${document.getElementById(`pk_sekarang_${i}`).value}]`);
+        }
+        detailText = `PERUBAHAN PEKERJAAN:\n` + listOrang.join("\n") + 
+                     `\nSAKSI 1: ${document.getElementById('saksi1_nama').value} (NIK: ${document.getElementById('saksi1_nik').value})` +
+                     `\nSAKSI 2: ${document.getElementById('saksi2_nama').value} (NIK: ${document.getElementById('saksi2_nik').value})`;
+      
+      } else if (menu === 'Pengurusan Akta Lahir') {
+        detailText = `AKTA LAHIR:` +
+                     `\n- Pelapor: ${document.getElementById('al_kwg_pelapor').value}` +
+                     `\n- Saksi I: ${document.getElementById('al_saksi1_nama').value} | NIK: ${document.getElementById('al_saksi1_nik').value} | KK: ${document.getElementById('al_saksi1_kk').value} | ${document.getElementById('al_saksi1_kwg').value}` +
+                     `\n- Saksi II: ${document.getElementById('al_saksi2_nama').value} | NIK: ${document.getElementById('al_saksi2_nik').value} | KK: ${document.getElementById('al_saksi2_kk').value} | ${document.getElementById('al_saksi2_kwg').value}` +
+                     `\n- Ayah: ${document.getElementById('al_ayah_nama').value} | NIK: ${document.getElementById('al_ayah_nik').value} | Lahir: ${document.getElementById('al_ayah_tempat').value}, ${document.getElementById('al_ayah_tgl').value} ${document.getElementById('al_ayah_bln').value} ${document.getElementById('al_ayah_thn').value} | ${document.getElementById('al_ayah_kwg').value}` +
+                     `\n- Ibu: ${document.getElementById('al_ibu_nama').value} | NIK: ${document.getElementById('al_ibu_nik').value} | Lahir: ${document.getElementById('al_ibu_tempat').value}, ${document.getElementById('al_ibu_tgl').value} ${document.getElementById('al_ibu_bln').value} ${document.getElementById('al_ibu_thn').value} | ${document.getElementById('al_ibu_kwg').value}` +
+                     `\n- Anak: ${document.getElementById('al_anak_nama').value} (${document.getElementById('al_anak_jk').value}) | Lahir: ${document.getElementById('al_anak_tempat').value} (${document.getElementById('al_anak_lokasi').value}), ${document.getElementById('al_anak_hari').value} ${document.getElementById('al_anak_tgl').value} ${document.getElementById('al_anak_bln').value} ${document.getElementById('al_anak_thn').value} Jam ${document.getElementById('al_anak_waktu').value} WIB | Jenis: ${document.getElementById('al_anak_jenis').value} (Anak Ke-${document.getElementById('al_anak_ke').value}) | Penolong: ${document.getElementById('al_anak_penolong').value} | BB: ${document.getElementById('al_anak_berat').value} kg | PB: ${document.getElementById('al_anak_panjang').value} cm`;
+      }
+
+      document.getElementById('detail_layanan').value = detailText;
+    }
+  </script>
 
 </body>
 </html>
