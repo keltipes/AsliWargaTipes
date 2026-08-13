@@ -1,42 +1,81 @@
-<script>
-  const form = document.getElementById('formUjiCoba');
-  const btnKirim = document.getElementById('btnKirim');
-  const pesanStatus = document.getElementById('pesanStatus');
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uji Coba Form Input Baru</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; max-width: 500px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input { width: 100%; padding: 8px; box-sizing: border-box; }
+    button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; }
+    button:hover { background: #0056b3; }
+    #pesanStatus { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>Formulir Input Data (Uji Coba)</h2>
   
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxLjlvqSnvMfY7d689zbZVn3zSmV6tz-059bv7nAI_pSUybeXs22wCT6S1a-LTfnSes/exec';
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
+  <form id="formUjiCoba">
+    <div class="form-group">
+      <label for="nama">Nama Lengkap:</label>
+      <input type="text" id="nama" name="nama" required>
+    </div>
     
-    btnKirim.disabled = true;
-    btnKirim.innerText = 'Mengirim...';
-    pesanStatus.style.color = 'black';
-    pesanStatus.innerText = 'Sedang memproses...';
+    <div class="form-group">
+      <label for="keterangan">Keterangan / Catatan:</label>
+      <input type="text" id="keterangan" name="keterangan" required>
+    </div>
+    
+    <button type="submit" id="btnKirim">Kirim Data</button>
+  </form>
 
-    // Kirim menggunakan URLSearchParams agar cocok dengan mode no-cors
-    const data = new URLSearchParams(new FormData(form));
+  <p id="pesanStatus"></p>
 
-    fetch(scriptURL, { 
-      method: 'POST', 
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: data 
-    })
-    .then(() => {
-      pesanStatus.style.color = 'green';
-      pesanStatus.innerText = 'Data berhasil dikirim!';
-      form.reset();
-      btnKirim.disabled = false;
-      btnKirim.innerText = 'Kirim Data';
-    })
-    .catch(error => {
-      pesanStatus.style.color = 'red';
-      pesanStatus.innerText = 'Gagal mengirim data. Coba lagi.';
-      console.error('Error:', error);
-      btnKirim.disabled = false;
-      btnKirim.innerText = 'Kirim Data';
+  <script>
+    const form = document.getElementById('formUjiCoba');
+    const btnKirim = document.getElementById('btnKirim');
+    const pesanStatus = document.getElementById('pesanStatus');
+    
+    // URL Web App dari Apps Script kamu
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxLjlvqSnvMfY7d689zbZVn3zSmV6tz-059bv7nAI_pSUybeXs22wCT6S1a-LTfnSes/exec';
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      btnKirim.disabled = true;
+      btnKirim.innerText = 'Mengirim...';
+      pesanStatus.style.color = 'black';
+      pesanStatus.innerText = 'Sedang memproses...';
+
+      const data = new URLSearchParams(new FormData(form));
+
+      fetch(scriptURL, { 
+        method: 'POST', 
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: data 
+      })
+      .then(() => {
+        pesanStatus.style.color = 'green';
+        pesanStatus.innerText = 'Data berhasil dikirim!';
+        form.reset();
+        btnKirim.disabled = false;
+        btnKirim.innerText = 'Kirim Data';
+      })
+      .catch(error => {
+        pesanStatus.style.color = 'red';
+        pesanStatus.innerText = 'Gagal mengirim data. Coba lagi.';
+        console.error('Error:', error);
+        btnKirim.disabled = false;
+        btnKirim.innerText = 'Kirim Data';
+      });
     });
-  });
-</script>
+  </script>
+
+</body>
+</html>
