@@ -9,8 +9,9 @@
     .form-group { margin-bottom: 15px; }
     label { display: block; margin-bottom: 5px; font-weight: bold; }
     input { width: 100%; padding: 8px; box-sizing: border-box; }
-    button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; }
+    button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; }
     button:hover { background: #0056b3; }
+    #pesanStatus { margin-top: 15px; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -31,7 +32,43 @@
     <button type="submit" id="btnKirim">Kirim Data</button>
   </form>
 
-  <p id="pesanStatus" style="margin-top:15px;"></p>
+  <p id="pesanStatus"></p>
+
+  <script>
+    const form = document.getElementById('formUjiCoba');
+    const btnKirim = document.getElementById('btnKirim');
+    const pesanStatus = document.getElementById('pesanStatus');
+    
+    // URL Apps Script milik kamu
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxLjlvqSnvMfY7d689zbZVn3zSmV6tz-059bv7nAI_pSUybeXs22wCT6S1a-LTfnSes/exec';
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // Mencegah reload halaman
+      
+      btnKirim.disabled = true;
+      btnKirim.innerText = 'Mengirim...';
+      pesanStatus.style.color = 'black';
+      pesanStatus.innerText = 'Sedang memproses...';
+
+      const formData = new FormData(form);
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          pesanStatus.style.color = 'green';
+          pesanStatus.innerText = 'Data berhasil disimpan!';
+          form.reset(); // Kosongkan form setelah sukses
+          btnKirim.disabled = false;
+          btnKirim.innerText = 'Kirim Data';
+        })
+        .catch(error => {
+          pesanStatus.style.color = 'red';
+          pesanStatus.innerText = 'Gagal mengirim data. Coba lagi.';
+          console.error('Error:', error);
+          btnKirim.disabled = false;
+          btnKirim.innerText = 'Kirim Data';
+        });
+    });
+  </script>
 
 </body>
 </html>
